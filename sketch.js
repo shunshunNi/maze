@@ -3,7 +3,7 @@ let maze_width = 20;
 let maze_height = 20;
 const canvas_size = 600;
 let box_size = 0;
-let isDraw = true;
+let isDraw = 1;
 
 function setup() {
   background(51);
@@ -15,10 +15,12 @@ function draw() {
   background(51);
   if (mouseIsPressed && (mouseX > canvas_size || mouseY > canvas_size)) {
     // do nothing
-  } else if (mouseIsPressed && isDraw) {
+  } else if (mouseIsPressed && isDraw == 1) {
     maze_arr[Math.floor(mouseY / box_size) + 1][Math.floor(mouseX / box_size) + 1] = 1;
-  } else if (mouseIsPressed && !isDraw) {
+  } else if (mouseIsPressed && isDraw == 0) {
     maze_arr[Math.floor(mouseY / box_size) + 1][Math.floor(mouseX / box_size) + 1] = 0;
+  } else if (mouseIsPressed && isDraw == 2) {
+    maze_arr[Math.floor(mouseY / box_size) + 1][Math.floor(mouseX / box_size) + 1] = 2;
   }
 
   for (let i = 0; i < maze_height; i++) {
@@ -26,8 +28,11 @@ function draw() {
       if (maze_arr[i + 1][j + 1] == 0) {
         fill(255, 255, 255);
         rect(j * box_size, i * box_size, box_size);
-      } else {
+      } else if (maze_arr[i + 1][j + 1] == 1) {
         fill(255, 0, 0);
+        rect(j * box_size, i * box_size, box_size);
+      } else {
+        fill(0, 0, 255);
         rect(j * box_size, i * box_size, box_size);
       }
     }
@@ -39,10 +44,6 @@ function mousePressed(e) {
 }
 
 const mazeSetup = () => {
-  mazeArrSetup();
-}
-
-const mazeArrSetup = () => {
   const maze_arr_width = maze_width + 2;
   const maze_arr_height = maze_height + 2;
   maze_arr = [];
@@ -68,10 +69,13 @@ document.getElementById("heightForm").addEventListener('change', (e) => {
 })
 
 document.getElementById("draw").addEventListener('change', (e) => {
-  isDraw = true;
+  isDraw = 1;
 })
 document.getElementById("erace").addEventListener('change', (e) => {
-  isDraw = false;
+  isDraw = 0;
+})
+document.getElementById("marker").addEventListener('change', (e) => {
+  isDraw = 2;
 })
 
 
